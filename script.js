@@ -105,6 +105,62 @@ function initpage() {
                 forecastE1s[i].appendChild(forecastHumidityE1);
             }
         })
+         
     }
 
+
+
+
+// geet history from local storage if any
+
+searchE1.addEventListener("click", function () {
+    
+    const searchTerm = cityE1.value;
+    getWeather(searchTerm);
+    searchHistory.push(searchTerm);
+    localStorage.setItem("search", JSON.stringify(searchHistory));
+    rendersearchHistory();
+})
+
+
+// button clear history
+
+clearE1.addEventListener("click", function(){
+    localStorage.clear();
+    searchHistory = [];
+    rendersearchHistory();
+})
+
+
+// conversion to convert temp value from kelvin scale to the fahrenheit scale
+
+function k2f(K){
+    return Math.floor((K - 273.15) * 1.8 + 32);
+}
+
+function rendersearchHistory(){
+    historyE1.innerHTML = "";
+    
+    for (let i = 0; i < searchHistory.length; i++) {
+        const historyTerm = document.createElement("input");
+        historyTerm.setAttribute("type", "text");
+        historyTerm.setAttribute("readonly", true);
+        historyTerm.setAttribute("class", "form-control d-block bg-white");
+        historyTerm.setAttribute("value", searchHistory[i]);
+        
+        historyTerm.addEventListener("click", function(){
+            getWeather(historyTerm.value);
+        })
+        historyE1.append(historyTerm);
+        
+    }
+}
+
+rendersearchHistory();
+if (searchHistory.length > 0) {
+    getweather(searchHistory[searchHistory.length - 1]);
+}
+
 };
+
+initpage();
