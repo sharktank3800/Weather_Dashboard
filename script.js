@@ -8,7 +8,6 @@ function initpage() {
     const currentTempE1 = document.getElementById("temperature");
     const currentHumidityE1 = document.getElementById("humidity");
     const currentWindE1 = document.getElementById("wind-speed");
-    const currentUVE1 = document.getElementById("UV-index");
     const historyE1 = document.getElementById("history");
     var fivedayE1 = document.getElementById("fiveday-header");
     var todayweatherE1 = document.getElementById("today-weather");
@@ -24,6 +23,7 @@ function initpage() {
         let apiURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIkey;
 
         // fetch the weather data
+
         fetch(apiURL)
         .then(function (response){
             if(!response.ok){
@@ -31,6 +31,7 @@ function initpage() {
             }
             return response.json();
         })
+
 
         .then(function (weatherData){
 
@@ -51,7 +52,14 @@ function initpage() {
             currentHumidityE1.innerHTML = "Humidity: " + weatherData.data.main.humidity + "%";
             currentWindE1.innerHTML = "Wind Speed: " + weatherData.data.main.speed + " MPH";
 
-        })
+        });
+
+
+        // get 5 day forecast for this city
+
+
+
+
 
     }
 
