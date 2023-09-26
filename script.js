@@ -1,4 +1,5 @@
-function initpage(){
+function initpage() {
+
     const cityE1 = document.getElementById("enter-city");
     const searchE1 = document.getElementById("search-button");
     const clearE1 = document.getElementById("clear-history");
@@ -50,8 +51,8 @@ function initpage(){
             currentHumidityE1.innerHTML = "Humidity: " + weatherData.data.main.humidity + "%";
             currentWindE1.innerHTML = "Wind Speed: " + weatherData.data.main.speed + " MPH";
 
-            // UV index 
-
         })
+
     }
-}
+
+};
