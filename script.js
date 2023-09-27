@@ -54,7 +54,7 @@ function initpage() {
             currentPicE1.setAttribute("alt", weatherData.weather[0].description);
             currentTempE1.innerHTML = "Temperature: " + k2f(weatherData.main.temp) + " &#176F";
             currentHumidityE1.innerHTML = "Humidity: " + weatherData.main.humidity + "%";
-            currentWindE1.innerHTML = "Wind Speed: " + weatherData.main.speed + " MPH";
+            currentWindE1.innerHTML = "Wind Speed: " + weatherData.wind.speed + " MPH";
 
 
 
