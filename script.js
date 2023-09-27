@@ -34,25 +34,29 @@ function initpage() {
 
 
         .then(function (weatherData){
+            if(!weatherData || !weatherData.dt){
+                console.error("invalid weather data:", weatherData);
+                return;
+            }
 
             todayweatherE1.classList.remove("d-none");
 
             // parse response to display current weather
 
-            const currentDate = new Date(weatherData.data.dt * 1000);
+            const currentDate = new Date(weatherData.dt * 1000);
             const day = currentDate.getDate();
-            const month = currentDate.getMonth();
+            const month = currentDate.getMonth() + 1;
             const year = currentDate.getFullYear();
             
-            nameE1.innerHTML = weatherData.data.name + "("+ month + "/" + day + "/" + year + ")";
-            let weatherPic = weatherData.data.weather[0].icon;
+            nameE1.innerHTML = weatherData.name + "("+ month + "/" + day + "/" + year + ")";
+            let weatherPic = weatherData.weather[0].icon;
             currentPicE1.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherPic + "@2x.png");
-            currentPicE1.setAttribute("alt", weatherData.data.weather[0].description);
-            currentTempE1.innerHTML = "Temperature: " + k2f(weatherData.data.main.temp) + " &#176F";
-            currentHumidityE1.innerHTML = "Humidity: " + weatherData.data.main.humidity + "%";
-            currentWindE1.innerHTML = "Wind Speed: " + weatherData.data.main.speed + " MPH";
+            currentPicE1.setAttribute("alt", weatherData.weather[0].description);
+            currentTempE1.innerHTML = "Temperature: " + k2f(weatherData.main.temp) + " &#176F";
+            currentHumidityE1.innerHTML = "Humidity: " + weatherData.main.humidity + "%";
+            currentWindE1.innerHTML = "Wind Speed: " + weatherData.main.speed + " MPH";
 
-        });
+
 
 
         // get 5 day forecast for this city
@@ -81,7 +85,7 @@ function initpage() {
                 const forecastIndex = i * 8 + 4;
                 const forecastDate = new Date(forecastData.list[forecastIndex].dt * 1000);
                 const forecastDay = forecastDate.getDate();
-                const forecastMonth = forecastDate.getMonth();
+                const forecastMonth = forecastDate.getMonth() + 1;
                 const forecastYear = forecastDate.getFullYear();
                 const forecastDateE1 = document.createElement("p");
 
@@ -105,6 +109,14 @@ function initpage() {
                 forecastE1s[i].appendChild(forecastHumidityE1);
             }
         })
+        .catch(function (forecastError){
+            console.error("an error occurred while fetching forecast: ", forecastError);
+        });
+
+    })
+    .catch(function (error){
+        console.error("an error occurred while fetching weather data:", error);
+    })
          
     }
 
@@ -112,6 +124,7 @@ function initpage() {
 
 
 // geet history from local storage if any
+rendersearchHistory();
 
 searchE1.addEventListener("click", function () {
     
@@ -120,7 +133,7 @@ searchE1.addEventListener("click", function () {
     searchHistory.push(searchTerm);
     localStorage.setItem("search", JSON.stringify(searchHistory));
     rendersearchHistory();
-})
+});
 
 
 // button clear history
@@ -149,16 +162,16 @@ function rendersearchHistory(){
         historyTerm.setAttribute("value", searchHistory[i]);
         
         historyTerm.addEventListener("click", function(){
-            getWeather(historyTerm.value);
-        })
+            getWeather(searchHistory[i]);
+        });
         historyE1.append(historyTerm);
         
     }
 }
 
-rendersearchHistory();
+
 if (searchHistory.length > 0) {
-    getweather(searchHistory[searchHistory.length - 1]);
+    getWeather(searchHistory[searchHistory.length - 1]);
 }
 
 };
